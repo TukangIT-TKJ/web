@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jadwal Piket Kelas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdf6ec;
+      --primary: #f5773a;
+      --primary-light: #fde9dc;
+      --secondary: #3a8ef5;
+      --secondary-light: #dceffe;
+      --accent: #2dcc8f;
+      --accent-light: #d5f5eb;
+      --yellow: #f5c842;
+      --yellow-light: #fef9e0;
+      --purple: #9b5de5;
+      --purple-light: #f0e6fd;
+      --text: #2d2d2d;
+      --text-muted: #7a7a7a;
+      --card: #ffffff;
+      --border: #efe3d3;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --radius: 16px;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 20px;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(245,119,58,0.06) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(58,142,245,0.06) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(45,204,143,0.04) 0%, transparent 60%);
+    }
+
+    /* HEADER */
+    .header {
+      text-align: center;
+      padding: 40px 20px 24px;
+      position: relative;
+    }
+    .header-badge {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: clamp(2rem, 6vw, 3.4rem);
+      color: var(--text);
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+    .header h1 span { color: var(--primary); }
+    .header-sub {
+      margin-top: 8px;
+      font-size: 15px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* TODAY BANNER */
+    .today-banner {
+      max-width: 700px;
+      margin: 0 auto 30px;
+      background: var(--primary);
+      border-radius: var(--radius);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 8px 30px rgba(245,119,58,0.35);
+      animation: slideDown 0.5s ease;
+    }
+    .today-icon {
+      font-size: 32px;
+      flex-shrink: 0;
+    }
+    .today-info { flex: 1; }
+    .today-label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.8);
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .today-day {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 22px;
+      color: white;
+      line-height: 1.2;
+    }
+    .today-names {
+      font-size: 14px;
+      color: rgba(255,255,255,0.9);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .today-badge {
+      background: rgba(255,255,255,0.25);
+      color: white;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    /* MAIN GRID */
+    .main-container { max-width: 1000px; margin: 0 auto; }
+
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    /* DAY CARD */
+    .day-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 2px solid transparent;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      animation: fadeUp 0.4s ease both;
+    }
+    .day-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+    }
+    .day-card.today-card {
+      border-color: var(--primary);
+      box-shadow: 0 8px 30px rgba(245,119,58,0.2);
+    }
+
+    .day-header {
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .day-name {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 20px;
+      color: white;
+    }
+    .day-number {
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.8);
+      background: rgba(0,0,0,0.12);
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+
+    /* Day colors */
+    .color-0 .day-header { background: linear-gradient(135deg, #f5773a, #f5a642); }
+    .color-1 .day-header { background: linear-gradient(135deg, #3a8ef5, #42c4f5); }
+    .color-2 .day-header { background: linear-gradient(135deg, #2dcc8f, #42f5c4); }
+    .color-3 .day-header { background: linear-gradient(135deg, #9b5de5, #c45df5); }
+    .color-4 .day-header { background: linear-gradient(135deg, #f5c842, #f5a842); }
+    .color-5 .day-header { background: linear-gradient(135deg, #f5427a, #f55d42); }
+
+    .day-body { padding: 14px 18px; }
+    
+    .piket-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .piket-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: var(--bg);
+      transition: background 0.15s;
+    }
+    .piket-item:hover { background: #f0e8de; }
+    .piket-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 900;
+      color: white;
+      flex-shrink: 0;
+      font-family: 'Fredoka One', sans-serif;
+    }
+    .piket-name { font-size: 14px; font-weight: 700; color: var(--text); }
+    .piket-task {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+    .empty-msg {
+      color: var(--text-muted);
+      font-size: 13px;
+      font-style: italic;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    /* AVATAR COLORS */
+    .av-0 { background: #f5773a; }
+    .av-1 { background: #3a8ef5; }
+    .av-2 { background: #2dcc8f; }
+    .av-3 { background: #9b5de5; }
+    .av-4 { background: #f5c842; color: #555 !important; }
+    .av-5 { background: #f5427a; }
+    .av-6 { background: #42c4f5; }
+    .av-7 { background: #a0c842; color: #555 !important; }
+
+    /* TASK BADGE COLORS */
+    .task-0 { background: var(--primary-light); color: var(--primary); }
+    .task-1 { background: var(--secondary-light); color: var(--secondary); }
+    .task-2 { background: var(--accent-light); color: #1a9e6e; }
+    .task-3 { background: var(--purple-light); color: var(--purple); }
+
+    /* EDIT PANEL */
+    .edit-section {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 30px;
+    }
+    .section-title {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 22px;
+      color: var(--text);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 140px; }
+    .form-group label { font-size: 12px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase; }
+    .form-group select,
+    .form-group input {
+      padding: 10px 14px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group select:focus,
+    .form-group input:focus { border-color: var(--primary); }
+
+    .btn {
+      padding: 11px 20px;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { box-shadow: 0 4px 15px rgba(245,119,58,0.4); }
+    .btn-danger { background: #fde8e8; color: #e53535; }
+    .btn-danger:hover { background: #e53535; color: white; }
+    .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+    .students-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .student-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 30px;
+      padding: 5px 12px 5px 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .student-chip .chip-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 900;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fredoka One', sans-serif;
+    }
+    .student-chip button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 14px;
+      padding: 0;
+      line-height: 1;
+      transition: color 0.15s;
+    }
+    .student-chip button:hover { color: #e53535; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* TABS */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 9px 20px;
+      border: 2px solid var(--border);
+      border-radius: 30px;
+      background: white;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+    .tab-btn:hover:not(.active) { border-color: var(--primary); color: var(--primary); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeUp 0.3s ease; }
+
+    /* LIST VIEW */
+    .list-table { width: 100%; border-collapse: collapse; }
+    .list-table th {
+      background: var(--bg);
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: left;
+    }
+    .list-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 14px; font-weight: 600; }
+    .list-table tr:last-child td { border-bottom: none; }
+    .list-table tr:hover td { background: var(--bg); }
+    .day-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      body { padding: 12px; }
+      .schedule-grid { grid-template-columns: 1fr; }
+      .today-banner { flex-wrap: wrap; }
+      .form-row { flex-direction: column; }
+    }
+
+    /* NOTIFICATION */
+    .notif {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--text);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      z-index: 999;
+      animation: fadeUp 0.3s ease;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">📋 Kelas XI TKJ 2</div>
+  <h1>Jadwal <span>Piket</span> Kelas</h1>
+  <p class="header-sub">Semester Genap • Tahun Ajaran 2025/2026</p>
+</div>
+
+<div class="main-container">
+  <!-- TODAY BANNER -->
+  <div class="today-banner" id="todayBanner">
+    <div class="today-icon">🌅</div>
+    <div class="today-info">
+      <div class="today-label">Piket Hari Ini</div>
+      <div class="today-day" id="todayDay">—</div>
+      <div class="today-names" id="todayNames">Tidak ada jadwal</div>
+    </div>
+    <div class="today-badge" id="todayBadge">—</div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('grid')">🗓️ Tampilan Kartu</button>
+    <button class="tab-btn" onclick="switchTab('list')">📋 Tampilan Daftar</button>
+    <button class="tab-btn" onclick="switchTab('edit')">✏️ Edit Jadwal</button>
+  </div>
+
+  <!-- GRID TAB -->
+  <div class="tab-content active" id="tab-grid">
+    <div class="schedule-grid" id="scheduleGrid"></div>
+  </div>
+
+  <!-- LIST TAB -->
+  <div class="tab-content" id="tab-list">
+    <div class="edit-section">
+      <div class="section-title">📋 Semua Jadwal Piket</div>
+      <div style="overflow-x:auto;">
+        <table class="list-table" id="listTable"></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT TAB -->
+  <div class="tab-content" id="tab-edit">
+    <!-- Manage Students -->
+    <div class="edit-section">
+      <div class="section-title">👤 Kelola Siswa</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nama Siswa</label>
+          <input type="text" id="newStudentName" placeholder="Masukkan nama siswa..." />
+        </div>
+        <div class="form-group" style="justify-content:flex-end;">
+          <label>&nbsp;</label>
+          <button class="btn btn-primary" onclick="addStudent()">➕ Tambah Siswa</button>
+        </div>
+      </div>
+      <div class="students-list" id="studentsList"></div>
+    </div>
+
+    <!-- Assign Schedule -->
+    <div class="edit-section">
+      <div class="section-title">📅 Atur Jadwal Piket</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Hari</label>
+          <select id="assignDay">
+            <option value="0">Senin</option>
+            <option value="1">Selasa</option>
+            <option value="2">Rabu</option>
+            <option value="3">Kamis</option>
+            <option value="4">Jumat</option>
+            <option value="5">Sabtu</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Siswa</label>
+          <select id="assignStudent"></select>
+        </div>
+        <div class="form-group">
+          <label>Tugas</label>
+          <select id="assignTask">
+            <option value="Sapu Lantai">🧹 Sapu Lantai</option>
+            <option value="Lap Papan Tulis">🪟 Lap Papan Tulis</option>
+            <option value="Buang Sampah">🗑️ Buang Sampah</option>
+            <option value="Siram Tanaman">🌿 Siram Tanaman</option>
+            <option value="Rapikan Meja">🪑 Rapikan Meja</option>
+            <option value="Absen Kelas">📝 Absen Kelas</option>
+          </select>
+        </div>
+        <div class="form-group" style="justify-content:flex-end;">
+          <label>&nbsp;</label>
+          <button class="btn btn-primary" onclick="addAssignment()">➕ Tambahkan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>✨ Jadwal Piket Kelas XI TKJ 2 &bull; Semangat Piket!</footer>
+
+<script>
+  const DAYS = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const DAY_COLORS = ['color-0','color-1','color-2','color-3','color-4','color-5'];
+  const DOT_COLORS = ['#f5773a','#3a8ef5','#2dcc8f','#9b5de5','#f5c842','#f5427a'];
+  const DAY_EMOJIS = ['','','','','',''];
+  const TASK_BADGE_CLASS = ['task-0','task-1','task-2','task-3'];
+
+  let students = [
+    'Andi Pratama','Budi Santoso','Citra Dewi','Dina Rahayu','Eka Putra','Fajar Nugroho',
+    'Gita Sari','Hendra Wijaya'
+  ];
+
+  let schedule = {
+    0: [{name:'Andi Pratama',task:'Sapu Lantai'},{name:'Budi Santoso',task:'Buang Sampah'}],
+    1: [{name:'Citra Dewi',task:'Lap Papan Tulis'},{name:'Dina Rahayu',task:'Rapikan Meja'}],
+    2: [{name:'Eka Putra',task:'Sapu Lantai'},{name:'Fajar Nugroho',task:'Siram Tanaman'}],
+    3: [{name:'Gita Sari',task:'Lap Papan Tulis'},{name:'Hendra Wijaya',task:'Absen Kelas'}],
+    4: [{name:'Andi Pratama',task:'Buang Sampah'},{name:'Citra Dewi',task:'Rapikan Meja'}],
+    5: [{name:'Budi Santoso',task:'Sapu Lantai'},{name:'Eka Putra',task:'Siram Tanaman'}],
+  };
+
+  function getInitials(name) {
+    return name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+  }
+
+  function getTodayDayIndex() {
+    const d = new Date().getDay(); // 0=Sun
+    if (d === 0 || d === 7) return -1;
+    return d - 1; // Mon=0 ... Sat=5
+  }
+
+  function renderGrid() {
+    const todayIdx = getTodayDayIndex();
+    const grid = document.getElementById('scheduleGrid');
+    grid.innerHTML = '';
+    for (let i = 0; i < 6; i++) {
+      const isToday = i === todayIdx;
+      const items = schedule[i] || [];
+      const card = document.createElement('div');
+      card.className = `day-card ${DAY_COLORS[i]}${isToday?' today-card':''}`;
+      card.style.animationDelay = `${i*0.07}s`;
+      card.innerHTML = `
+        <div class="day-header">
+          <span class="day-name">${DAY_EMOJIS[i]} ${DAYS[i]}</span>
+          ${isToday ? '<span class="day-number">Hari Ini</span>' : `<span class="day-number">${items.length} orang</span>`}
+        </div>
+        <div class="day-body">
+          <ul class="piket-list">
+            ${items.length === 0 
+              ? '<li class="empty-msg">Belum ada jadwal</li>'
+              : items.map((it,j) => `
+                  <li class="piket-item">
+                    <div class="piket-avatar av-${j % 8}">${getInitials(it.name)}</div>
+                    <span class="piket-name">${it.name}</span>
+                    <span class="piket-task ${TASK_BADGE_CLASS[j % 4]}">${it.task}</span>
+                    <button onclick="removeAssignment(${i},${j})" style="background:none;border:none;cursor:pointer;color:#ccc;font-size:16px;padding:0;margin-left:4px;transition:color 0.15s;" onmouseover="this.style.color='#e53535'" onmouseout="this.style.color='#ccc'">×</button>
+                  </li>`).join('')}
+          </ul>
+        </div>`;
+      grid.appendChild(card);
+    }
+  }
+
+  function renderList() {
+    const todayIdx = getTodayDayIndex();
+    const table = document.getElementById('listTable');
+    let html = `<thead><tr>
+      <th>Hari</th><th>Nama Siswa</th><th>Tugas</th><th>Aksi</th>
+    </tr></thead><tbody>`;
+    for (let i = 0; i < 6; i++) {
+      const items = schedule[i] || [];
+      if (items.length === 0) {
+        html += `<tr><td><span class="day-dot" style="background:${DOT_COLORS[i]}"></span>${DAYS[i]}${i===todayIdx?' <b style="color:var(--primary)">(Hari Ini)</b>':''}</td><td colspan="3" style="color:var(--text-muted);font-style:italic">Belum ada jadwal</td></tr>`;
+      } else {
+        items.forEach((it,j)=>{
+          html += `<tr>
+            ${j===0 ? `<td rowspan="${items.length}"><span class="day-dot" style="background:${DOT_COLORS[i]}"></span>${DAYS[i]}${i===todayIdx?' <b style="color:var(--primary)">(Hari Ini)</b>':''}</td>` : ''}
+            <td>${it.name}</td>
+            <td><span class="piket-task ${TASK_BADGE_CLASS[j%4]}">${it.task}</span></td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeAssignment(${i},${j})">🗑️ Hapus</button></td>
+          </tr>`;
+        });
+      }
+    }
+    html += '</tbody>';
+    table.innerHTML = html;
+  }
+
+  function renderStudentsList() {
+    const list = document.getElementById('studentsList');
+    list.innerHTML = students.map((s,i)=>`
+      <div class="student-chip">
+        <div class="chip-avatar av-${i%8}">${getInitials(s)}</div>
+        <span>${s}</span>
+        <button onclick="removeStudent(${i})">×</button>
+      </div>`).join('');
+    const sel = document.getElementById('assignStudent');
+    sel.innerHTML = students.map(s=>`<option value="${s}">${s}</option>`).join('');
+  }
+
+  function renderTodayBanner() {
+    const todayIdx = getTodayDayIndex();
+    const banner = document.getElementById('todayBanner');
+    if (todayIdx === -1) {
+      document.getElementById('todayDay').textContent = 'Akhir Pekan 🎉';
+      document.getElementById('todayNames').textContent = 'Selamat beristirahat!';
+      document.getElementById('todayBadge').textContent = 'Libur';
+      banner.style.background = 'linear-gradient(135deg, #2dcc8f, #42c4f5)';
+      return;
+    }
+    const items = schedule[todayIdx] || [];
+    document.getElementById('todayDay').textContent = DAYS[todayIdx];
+    banner.style.background = `linear-gradient(135deg, ${DOT_COLORS[todayIdx]}, ${DOT_COLORS[(todayIdx+1)%6]})`;
+    if (items.length === 0) {
+      document.getElementById('todayNames').textContent = 'Belum ada jadwal piket';
+      document.getElementById('todayBadge').textContent = '—';
+    } else {
+      document.getElementById('todayNames').textContent = items.map(i=>i.name).join(' & ');
+      document.getElementById('todayBadge').textContent = `${items.length} siswa`;
+    }
+  }
+
+  function renderAll() {
+    renderTodayBanner();
+    renderGrid();
+    renderList();
+    renderStudentsList();
+  }
+
+  function addStudent() {
+    const input = document.getElementById('newStudentName');
+    const name = input.value.trim();
+    if (!name) return showNotif('⚠️ Nama tidak boleh kosong!');
+    if (students.includes(name)) return showNotif('⚠️ Siswa sudah ada!');
+    students.push(name);
+    input.value = '';
+    renderStudentsList();
+    showNotif(`✅ ${name} ditambahkan!`);
+  }
+
+  function removeStudent(idx) {
+    const name = students[idx];
+    students.splice(idx, 1);
+    for (let d = 0; d < 6; d++) {
+      schedule[d] = (schedule[d]||[]).filter(s=>s.name !== name);
+    }
+    renderAll();
+    showNotif(`🗑️ ${name} dihapus`);
+  }
+
+  function addAssignment() {
+    const day = parseInt(document.getElementById('assignDay').value);
+    const name = document.getElementById('assignStudent').value;
+    const task = document.getElementById('assignTask').value;
+    if (!name) return showNotif('⚠️ Pilih siswa terlebih dahulu!');
+    if (!schedule[day]) schedule[day] = [];
+    if (schedule[day].find(s=>s.name===name)) return showNotif('⚠️ Siswa sudah terjadwal hari ini!');
+    schedule[day].push({name, task});
+    renderAll();
+    showNotif(`✅ ${name} dijadwalkan piket ${DAYS[day]}!`);
+  }
+
+  function removeAssignment(day, idx) {
+    schedule[day].splice(idx, 1);
+    renderAll();
+    showNotif('🗑️ Jadwal dihapus');
+  }
+
+  function switchTab(name) {
+    document.querySelectorAll('.tab-btn').forEach((b,i) => {
+      const tabs = ['grid','list','edit'];
+      b.classList.toggle('active', tabs[i] === name);
+    });
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.getElementById('tab-'+name).classList.add('active');
+    if (name === 'list') renderList();
+  }
+
+  let notifTimer;
+  function showNotif(msg) {
+    clearTimeout(notifTimer);
+    let el = document.querySelector('.notif');
+    if (!el) { el = document.createElement('div'); el.className = 'notif'; document.body.appendChild(el); }
+    el.textContent = msg;
+    el.style.display = 'block';
+    notifTimer = setTimeout(() => { el.style.display = 'none'; }, 2500);
+  }
+
+  // ENTER key on student input
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('newStudentName').addEventListener('keydown', e => {
+      if (e.key === 'Enter') addStudent();
+    });
+  });
+
+  renderAll();
+</script>
+</body>
+</html>

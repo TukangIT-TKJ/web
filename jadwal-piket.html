@@ -413,6 +413,181 @@
       .form-row { flex-direction: column; }
     }
 
+    /* FOTO GALLERY */
+    .foto-upload-area {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 36px 24px;
+      text-align: center;
+      cursor: pointer;
+      background: var(--bg);
+      transition: border-color 0.2s, background 0.2s;
+      margin-bottom: 20px;
+    }
+    .foto-upload-area:hover { border-color: var(--primary); background: var(--primary-light); }
+    .foto-upload-icon { font-size: 36px; margin-bottom: 8px; }
+    .foto-upload-text { font-size: 15px; font-weight: 700; color: var(--text); }
+    .foto-upload-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; font-weight: 600; }
+    .foto-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 14px;
+    }
+    .foto-empty { color: var(--text-muted); font-size: 13px; font-style: italic; text-align: center; padding: 10px 0; grid-column: 1/-1; }
+    .foto-item {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: var(--card);
+      border: 2px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+    .foto-item:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.13); }
+    .foto-item img { width: 100%; height: 140px; object-fit: cover; display: block; }
+    .foto-item-name {
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .foto-item-del {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: rgba(0,0,0,0.45);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .foto-item:hover .foto-item-del { opacity: 1; }
+
+    /* ABSENSI */
+    .absensi-day-block {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .absensi-day-block.today-block { border-color: var(--primary); }
+    .absensi-day-header {
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .absensi-day-title {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 18px;
+      color: white;
+    }
+    .absensi-progress-wrap { flex: 1; max-width: 180px; }
+    .absensi-progress-bar {
+      background: rgba(255,255,255,0.25);
+      border-radius: 10px;
+      height: 8px;
+      overflow: hidden;
+      margin-bottom: 3px;
+    }
+    .absensi-progress-fill {
+      height: 100%;
+      background: white;
+      border-radius: 10px;
+      transition: width 0.4s ease;
+    }
+    .absensi-progress-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.9);
+      text-align: right;
+    }
+    .absensi-list {
+      list-style: none;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .absensi-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: var(--bg);
+      cursor: pointer;
+      transition: background 0.15s, opacity 0.2s;
+      user-select: none;
+    }
+    .absensi-item:hover { background: #f0e8de; }
+    .absensi-item.checked { background: var(--accent-light); }
+    .absensi-item.checked .absensi-name { text-decoration: line-through; color: var(--text-muted); }
+    .absensi-checkbox {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 2.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 14px;
+      transition: all 0.2s;
+      background: white;
+    }
+    .absensi-item.checked .absensi-checkbox {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+    .absensi-name { font-size: 14px; font-weight: 700; color: var(--text); flex: 1; }
+    .absensi-badge-done {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 8px;
+      background: var(--accent-light);
+      color: #1a9e6e;
+      white-space: nowrap;
+    }
+    .absensi-reset-btn {
+      padding: 6px 14px;
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      background: white;
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .absensi-reset-btn:hover { border-color: #e53535; color: #e53535; }
+    .absensi-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
     /* NOTIFICATION */
     .notif {
       position: fixed;
@@ -452,9 +627,10 @@
 
   <!-- TABS -->
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('grid')">🗓️ Tampilan Kartu</button>
-    <button class="tab-btn" onclick="switchTab('list')">📋 Tampilan Daftar</button>
-    <button class="tab-btn" onclick="switchTab('edit')">✏️ Edit Jadwal</button>
+    <button class="tab-btn active" onclick="switchTab('grid')"> Tampilan Kartu</button>
+    <button class="tab-btn" onclick="switchTab('list')"> Tampilan Daftar</button>
+    <button class="tab-btn" onclick="switchTab('foto')"> Upload Foto</button>
+    <button class="tab-btn" onclick="switchTab('absensi')"> Absensi Piket</button>
   </div>
 
   <!-- GRID TAB -->
@@ -472,61 +648,33 @@
     </div>
   </div>
 
-  <!-- EDIT TAB -->
-  <div class="tab-content" id="tab-edit">
-    <!-- Manage Students -->
+  <!-- FOTO TAB -->
+  <div class="tab-content" id="tab-foto">
     <div class="edit-section">
-      <div class="section-title">👤 Kelola Siswa</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Nama Siswa</label>
-          <input type="text" id="newStudentName" placeholder="Masukkan nama siswa..." />
-        </div>
-        <div class="form-group" style="justify-content:flex-end;">
-          <label>&nbsp;</label>
-          <button class="btn btn-primary" onclick="addStudent()">➕ Tambah Siswa</button>
-        </div>
+      <div class="section-title">🖼️ Galeri Foto</div>
+      <div class="foto-upload-area" id="fotoUploadArea" onclick="document.getElementById('fotoInput').click()">
+        <div class="foto-upload-icon">📷</div>
+        <div class="foto-upload-text">Klik untuk upload gambar</div>
+        <div class="foto-upload-sub">PNG, JPG, GIF, WEBP didukung</div>
+        <input type="file" id="fotoInput" accept="image/*" multiple style="display:none" onchange="handleFotoUpload(event)" />
       </div>
-      <div class="students-list" id="studentsList"></div>
-    </div>
-
-    <!-- Assign Schedule -->
-    <div class="edit-section">
-      <div class="section-title">📅 Atur Jadwal Piket</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Hari</label>
-          <select id="assignDay">
-            <option value="0">Senin</option>
-            <option value="1">Selasa</option>
-            <option value="2">Rabu</option>
-            <option value="3">Kamis</option>
-            <option value="4">Jumat</option>
-            <option value="5">Sabtu</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Siswa</label>
-          <select id="assignStudent"></select>
-        </div>
-        <div class="form-group">
-          <label>Tugas</label>
-          <select id="assignTask">
-            <option value="Sapu Lantai">🧹 Sapu Lantai</option>
-            <option value="Lap Papan Tulis">🪟 Lap Papan Tulis</option>
-            <option value="Buang Sampah">🗑️ Buang Sampah</option>
-            <option value="Siram Tanaman">🌿 Siram Tanaman</option>
-            <option value="Rapikan Meja">🪑 Rapikan Meja</option>
-            <option value="Absen Kelas">📝 Absen Kelas</option>
-          </select>
-        </div>
-        <div class="form-group" style="justify-content:flex-end;">
-          <label>&nbsp;</label>
-          <button class="btn btn-primary" onclick="addAssignment()">➕ Tambahkan</button>
-        </div>
+      <div class="foto-gallery" id="fotoGallery">
+        <div class="foto-empty" id="fotoEmpty">Belum ada foto yang diupload</div>
       </div>
     </div>
   </div>
+
+  <!-- ABSENSI TAB -->
+  <div class="tab-content" id="tab-absensi">
+    <div class="edit-section">
+      <div class="absensi-top-bar">
+        <div class="section-title" style="margin-bottom:0">✅ Absensi Piket</div>
+        <button class="absensi-reset-btn" onclick="resetAbsensi()">🔄 Reset Semua</button>
+      </div>
+      <div id="absensiContent"></div>
+    </div>
+  </div>
+
 </div>
 
 <footer>✨ Jadwal Piket Kelas XI TKJ 2 &bull; Semangat Piket!</footer>
@@ -539,17 +687,21 @@
   const TASK_BADGE_CLASS = ['task-0','task-1','task-2','task-3'];
 
   let students = [
-    'Andi Pratama','Budi Santoso','Citra Dewi','Dina Rahayu','Eka Putra','Fajar Nugroho',
-    'Gita Sari','Hendra Wijaya'
+    'Leon','Agung','Reza','Alenta','Amel',
+    'Arga','Atta','Anggi','Auryna','Ayunda',
+    'Ayuni','Dafva','Early','Edo','Abil',
+    'Firda','Firdausi','Gevino','Icha','Karina',
+    'Kia','Ego','Misela','Rizky Adit','Alfian',
+    'Adit S','Ferdi','Hafiz','Iqbal','Abel',
+    'Rizal','Salsa','Tesa','Yohanes','Vio'
   ];
 
   let schedule = {
-    0: [{name:'Andi Pratama',task:'Sapu Lantai'},{name:'Budi Santoso',task:'Buang Sampah'}],
-    1: [{name:'Citra Dewi',task:'Lap Papan Tulis'},{name:'Dina Rahayu',task:'Rapikan Meja'}],
-    2: [{name:'Eka Putra',task:'Sapu Lantai'},{name:'Fajar Nugroho',task:'Siram Tanaman'}],
-    3: [{name:'Gita Sari',task:'Lap Papan Tulis'},{name:'Hendra Wijaya',task:'Absen Kelas'}],
-    4: [{name:'Andi Pratama',task:'Buang Sampah'},{name:'Citra Dewi',task:'Rapikan Meja'}],
-    5: [{name:'Budi Santoso',task:'Sapu Lantai'},{name:'Eka Putra',task:'Siram Tanaman'}],
+    0: [{name:'Lia'},{name:'Icha'},{name:'Alfian'},{name:'Ayunda'},{name:'Early'},{name:'Vio'},{name:'Reza'}],
+    1: [{name:'Abel'},{name:'Misela'},{name:'Gevino'},{name:'Arga'},{name:'Ayuni'},{name:'Tesa'},{name:'Edo'}],
+    2: [{name:'Anggi'},{name:'Leon'},{name:'Amel'},{name:'Salsa'},{name:'Atta'},{name:'Karina'},{name:'Auryna'}],
+    3: [{name:'Alenta'},{name:'Rizal'},{name:'Abil'},{name:'Ego'},{name:'Yohanes'},{name:'Dafva'},{name:'Firdausi'}],
+    4: [{name:'Rizky Adit'},{name:'Kia'},{name:'Iqbal'},{name:'Ferdi'},{name:'Agung'},{name:'Hafiz'},{name:'Adit S'}],
   };
 
   function getInitials(name) {
@@ -558,7 +710,7 @@
 
   function getTodayDayIndex() {
     const d = new Date().getDay(); // 0=Sun
-    if (d === 0 || d === 7) return -1;
+    if (d === 0 || d === 6 || d === 7) return -1;
     return d - 1; // Mon=0 ... Sat=5
   }
 
@@ -566,7 +718,7 @@
     const todayIdx = getTodayDayIndex();
     const grid = document.getElementById('scheduleGrid');
     grid.innerHTML = '';
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 5; i++) {
       const isToday = i === todayIdx;
       const items = schedule[i] || [];
       const card = document.createElement('div');
@@ -585,7 +737,6 @@
                   <li class="piket-item">
                     <div class="piket-avatar av-${j % 8}">${getInitials(it.name)}</div>
                     <span class="piket-name">${it.name}</span>
-                    <span class="piket-task ${TASK_BADGE_CLASS[j % 4]}">${it.task}</span>
                     <button onclick="removeAssignment(${i},${j})" style="background:none;border:none;cursor:pointer;color:#ccc;font-size:16px;padding:0;margin-left:4px;transition:color 0.15s;" onmouseover="this.style.color='#e53535'" onmouseout="this.style.color='#ccc'">×</button>
                   </li>`).join('')}
           </ul>
@@ -598,19 +749,17 @@
     const todayIdx = getTodayDayIndex();
     const table = document.getElementById('listTable');
     let html = `<thead><tr>
-      <th>Hari</th><th>Nama Siswa</th><th>Tugas</th><th>Aksi</th>
+      <th>Hari</th><th>Nama Siswa</th>
     </tr></thead><tbody>`;
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 5; i++) {
       const items = schedule[i] || [];
       if (items.length === 0) {
-        html += `<tr><td><span class="day-dot" style="background:${DOT_COLORS[i]}"></span>${DAYS[i]}${i===todayIdx?' <b style="color:var(--primary)">(Hari Ini)</b>':''}</td><td colspan="3" style="color:var(--text-muted);font-style:italic">Belum ada jadwal</td></tr>`;
+        html += `<tr><td><span class="day-dot" style="background:${DOT_COLORS[i]}"></span>${DAYS[i]}${i===todayIdx?' <b style="color:var(--primary)">(Hari Ini)</b>':''}</td><td colspan="1" style="color:var(--text-muted);font-style:italic">Belum ada jadwal</td></tr>`;
       } else {
         items.forEach((it,j)=>{
           html += `<tr>
             ${j===0 ? `<td rowspan="${items.length}"><span class="day-dot" style="background:${DOT_COLORS[i]}"></span>${DAYS[i]}${i===todayIdx?' <b style="color:var(--primary)">(Hari Ini)</b>':''}</td>` : ''}
             <td>${it.name}</td>
-            <td><span class="piket-task ${TASK_BADGE_CLASS[j%4]}">${it.task}</span></td>
-            <td><button class="btn btn-danger btn-sm" onclick="removeAssignment(${i},${j})">🗑️ Hapus</button></td>
           </tr>`;
         });
       }
@@ -653,11 +802,49 @@
     }
   }
 
+  let fotos = [];
+
+  function handleFotoUpload(e) {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        fotos.push({ name: file.name, src: ev.target.result });
+        renderFotos();
+        showNotif(`✅ ${file.name} berhasil diupload!`);
+      };
+      reader.readAsDataURL(file);
+    });
+    e.target.value = '';
+  }
+
+  function deleteFoto(idx) {
+    const name = fotos[idx].name;
+    fotos.splice(idx, 1);
+    renderFotos();
+    showNotif(`🗑️ ${name} dihapus`);
+  }
+
+  function renderFotos() {
+    const gallery = document.getElementById('fotoGallery');
+    const empty = document.getElementById('fotoEmpty');
+    if (fotos.length === 0) {
+      gallery.innerHTML = '<div class="foto-empty" id="fotoEmpty">Belum ada foto yang diupload</div>';
+      return;
+    }
+    gallery.innerHTML = fotos.map((f, i) => `
+      <div class="foto-item">
+        <img src="${f.src}" alt="${f.name}" />
+        <div class="foto-item-name">${f.name}</div>
+        <button class="foto-item-del" onclick="deleteFoto(${i})" title="Hapus">×</button>
+      </div>`).join('');
+  }
+
   function renderAll() {
     renderTodayBanner();
     renderGrid();
     renderList();
-    renderStudentsList();
   }
 
   function addStudent() {
@@ -699,14 +886,82 @@
     showNotif('🗑️ Jadwal dihapus');
   }
 
+  // ABSENSI
+  let absensi = {}; // { dayIdx: { studentIdx: true/false } }
+
+  function toggleAbsensi(dayIdx, studentIdx) {
+    if (!absensi[dayIdx]) absensi[dayIdx] = {};
+    absensi[dayIdx][studentIdx] = !absensi[dayIdx][studentIdx];
+    renderAbsensi();
+    const items = schedule[dayIdx] || [];
+    const nama = items[studentIdx]?.name || '';
+    const sudah = absensi[dayIdx][studentIdx];
+    showNotif(sudah ? `✅ ${nama} sudah piket!` : `↩️ ${nama} dibatalkan`);
+  }
+
+  function resetAbsensi() {
+    absensi = {};
+    renderAbsensi();
+    showNotif('🔄 Absensi direset');
+  }
+
+  function renderAbsensi() {
+    const todayIdx = getTodayDayIndex();
+    const container = document.getElementById('absensiContent');
+    let html = '';
+    for (let i = 0; i < 5; i++) {
+      const items = schedule[i] || [];
+      const dayAbsensi = absensi[i] || {};
+      const doneCount = Object.values(dayAbsensi).filter(Boolean).length;
+      const total = items.length;
+      const pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+      const isToday = i === todayIdx;
+      const headerStyle = [
+        'linear-gradient(135deg,#f5773a,#f5a642)',
+        'linear-gradient(135deg,#3a8ef5,#42c4f5)',
+        'linear-gradient(135deg,#2dcc8f,#42f5c4)',
+        'linear-gradient(135deg,#9b5de5,#c45df5)',
+        'linear-gradient(135deg,#f5c842,#f5a842)',
+      ][i];
+      html += `
+        <div class="absensi-day-block${isToday?' today-block':''}">
+          <div class="absensi-day-header" style="background:${headerStyle}">
+            <span class="absensi-day-title">${DAY_EMOJIS[i]} ${DAYS[i]}${isToday?' 🔔':''}</span>
+            <div class="absensi-progress-wrap">
+              <div class="absensi-progress-bar">
+                <div class="absensi-progress-fill" style="width:${pct}%"></div>
+              </div>
+              <div class="absensi-progress-label">${doneCount}/${total} sudah piket</div>
+            </div>
+          </div>
+          <ul class="absensi-list">
+            ${total === 0
+              ? `<li style="color:var(--text-muted);font-style:italic;padding:8px 14px;font-size:13px">Belum ada jadwal</li>`
+              : items.map((it, j) => {
+                  const done = !!dayAbsensi[j];
+                  return `<li class="absensi-item${done?' checked':''}" onclick="toggleAbsensi(${i},${j})">
+                    <div class="absensi-checkbox">${done?'✓':''}</div>
+                    <div class="piket-avatar av-${j%8}" style="width:30px;height:30px;font-size:13px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;color:white;flex-shrink:0;font-family:'Fredoka One',sans-serif;">${getInitials(it.name)}</div>
+                    <span class="absensi-name">${it.name}</span>
+                    ${done?'<span class="absensi-badge-done">Sudah ✓</span>':''}
+                  </li>`;
+                }).join('')
+            }
+          </ul>
+        </div>`;
+    }
+    container.innerHTML = html;
+  }
+
   function switchTab(name) {
     document.querySelectorAll('.tab-btn').forEach((b,i) => {
-      const tabs = ['grid','list','edit'];
+      const tabs = ['grid','list','foto','absensi'];
       b.classList.toggle('active', tabs[i] === name);
     });
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
     document.getElementById('tab-'+name).classList.add('active');
     if (name === 'list') renderList();
+    if (name === 'absensi') renderAbsensi();
   }
 
   let notifTimer;
